@@ -1,7 +1,7 @@
 /* USEFULL LINKS */
 // https://www.brewerydb.com/developers
 // key: 83c3578c4780db48dd6cf842b8017ddf
-// getAllBeers: https://sandbox-api.brewerydb.com/v2/beers?key=83c3578c4780db48dd6cf842b8017ddf
+// getAllBeers: https://api.brewerydb.com/v2/beers?key=83c3578c4780db48dd6cf842b8017ddf
 // http://dut-info-annecy.fr/dim2019/
 
 /* HEADBAR */
@@ -42,3 +42,8 @@ json.forEach(beer => {
     beerCell.append(beerText);
     displayBeer.append(beerCell);
 })
+
+fetch("http://localhost:3000/beers")
+.then(data => {
+    console.log(data);
+});
