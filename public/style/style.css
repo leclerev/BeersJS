@@ -1,0 +1,60 @@
+* {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#headbar {
+    text-align: center;
+    background-color: rgba(179, 179, 179, 0.726);
+}
+
+h1 {
+    margin: 10px;
+}
+
+.headbarMenu {
+    display: inline-block;
+    transition: 1s;
+    background-color: rgb(104, 104, 255);
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    padding: 5px;
+}
+
+.headbarMenu:hover {
+    background-color: rgb(58, 58, 255);
+    margin: 15px;
+    padding: 10px;
+}
+
+.beerCell {
+    transition: 1s;
+    display: inline-block;
+    background-color: red;
+    width: 10vw;
+    height: 10vw;
+    margin: 5px;
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.beerText {
+    color: white;
+    transition: 1s;
+    background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0));
+    opacity: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.beerCell:hover {
+    width: 30vw;
+}
+
+.beerCell:hover .beerText {
+    opacity: 1;
+}
