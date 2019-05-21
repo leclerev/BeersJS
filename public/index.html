@@ -7,15 +7,23 @@
 </head>
 <body>
     <div id="headbar"></div>
+    
+    <div id="description"></div>
 
     <div class="element" id="welcome" title="Welcome">
         <h1>Welcome to your local Brewery!</h1>
     </div>
 
     <div class="element" id="search" title="Search beer">
-		<span>Beer name: </span> <input type="text"/> <button>Search</button>
-		<div id="displayBeer"></div>
+        <h1>Beers</h1>
+		<span>Beer name: </span> <input id="beerSearchName" type="text"/> <button id="beerSearchButton">Search</button>
+        <div id="displayBeer"></div>
+        <div id="displayPageBeer"></div>
     </div>
+
+    <footer>
+        Made by Valentin LECLERE with NodeJS
+    </footer>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript" src="js/main.js"></script>

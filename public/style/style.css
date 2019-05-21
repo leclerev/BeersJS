@@ -32,29 +32,77 @@ h1 {
 
 .beerCell {
     transition: 1s;
+    position: relative;
     display: inline-block;
-    background-color: red;
+    background-color: white;
     width: 10vw;
     height: 10vw;
     margin: 5px;
     box-sizing: border-box;
     vertical-align: top;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-.beerText {
+.beerCell, .beerTitle {
+    border-radius: 20px;
+}
+
+.beerTitle {
     color: white;
-    transition: 1s;
-    background: linear-gradient(to bottom, black, rgba(0, 0, 0, 0));
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
     opacity: 0;
-    overflow: scroll;
-    overflow-x: hidden;
+    transition: 1s;
+    height: 0%;
+}
+
+.beerCell:hover .beerTitle {
+    opacity: 1;
     height: 100%;
 }
 
-.beerCell:hover {
-    width: 30vw;
+#description {
+    color: rgb(255, 255, 255);
+    padding: 2vw;
+    padding-top: 10%;
+    position: fixed;
+    transition: 1s;
+    background-color: rgba(24, 24, 24, 0.829);
+    opacity: 0;
+    z-index: 1000;
+    /*overflow: scroll;
+    overflow-x: hidden;*/
+    height: 0;
+    width: 0;
+    top: 0;
+    left: 0;
+    padding-top: auto;
+    padding-bottom: auto;
 }
 
-.beerCell:hover .beerText {
+.noDesc {
+    color: rgb(187, 187, 187);
+}
+
+.a {
+    cursor: pointer;
+    color: rgb(58, 58, 255);
+}
+
+.beerCell:hover {
+    width: 11vw;
+    cursor: pointer;
+}
+
+/*.beerCell:hover .beerText {
     opacity: 1;
+}*/
+
+footer {
+    background-color: rgb(165, 165, 165);
+    padding: 50px;
+    margin-top: 20px;
 }

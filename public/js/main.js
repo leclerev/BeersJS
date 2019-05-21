@@ -11,7 +11,6 @@ let headbar = document.getElementById("headbar");
 let allElements = document.querySelectorAll(".element");
 
 allElements.forEach(element => {
-    console.log(element.title);
     let headbarMenu = document.createElement("a");
     headbarMenu.innerText = element.title;
     headbarMenu.href = "#" + element.id;
@@ -21,29 +20,118 @@ allElements.forEach(element => {
 
 /* ---------------------------------------------------------- */
 
-//temp json
-let json = [{
-    "name": "12th Of Never",
-    "description": "Tropically Hoppy. Light, yet Full-Bodied. Bright and Citrusy. Word.\r\nThe magical, mystical 12th of Never is a blend of Old and New School hops that play bright citrus, rich coconut, and papaya-esque flavors, all on a solid stage of English puffed wheat. Tropically hoppy. Light, yet full-bodied. Bright and citrusy. The 12th of Never Ale is everything we\u2019ve learned about making hop-forward beer expressed in a moderate voice.  Pale, cold, slightly alcoholic and bitter.  It\u2019s all we know.\r\n\r\nThese 12oz mini-kegs (AKA cans) are an exciting new option for us, and we are stoopid stoked at the opportunity for y'all to take us to all those new, nelophobic locations\u2026"
-}, {
-    "name": "16 So Fine Red Wheat Wine",
-    "description": "For our super heady 16 year anniversary beer we stepped on the gas and headed down the road less traveled! Our b-day present to ourselves was a racy Red Wheat Wine. The brew rips down the road at 11% ABV fueld by a 45% wheat bomb with an after burner hop shot of Amarillo, Willamette, Nelson Sauvignon, and US Goldings that pushes this baby to the limit of sensory overload. Get in. Sit down. Hold on. Shut up."
-}];
+let beerSearchName = document.querySelector("#beerSearchName");
+let beerSearchButton = document.querySelector("#beerSearchButton");
+beerSearchButton.addEventListener("click", e => {
+    searchValue = beerSearchName.value;
+    fetch("/beers/1/" + searchValue)
+        .then(dataResponse => {
+            if (dataResponse.ok) {
+                dataResponse.json().then(data => {
+                    displayProtocol(data);
+                });
+            }
+        });
+});
+
+/* ---------------------------------------------------------- */
+
+let searchValue = "";
 
 /* Beer display */
 let displayBeer = document.getElementById("displayBeer");
-//beer request
-json.forEach(beer => {
-    let beerCell = document.createElement("div");
-    beerCell.classList.add("beerCell");
-    let beerText = document.createElement("div");
-    beerText.textContent = "Name: " + beer.name + "\n Description: " + beer.description;
-    beerText.classList.add("beerText");
-    beerCell.append(beerText);
-    displayBeer.append(beerCell);
-})
 
-fetch("http://localhost:3000/beers")
-.then(data => {
-    console.log(data);
-});
+fetch("/beers")
+    .then(dataResponse => {
+        if (dataResponse.ok) {
+            dataResponse.json().then(data => {
+                displayProtocol(data);
+            });
+        }
+    });
+
+function displayProtocol(data) {
+    displayBeers(data.data);
+    displayPages(data.currentPage, data.numberOfPages);
+}
+
+function displayBeers(json) {
+    // clear display
+    displayBeer.innerHTML = "";
+
+    //beer request
+    json.forEach(beer => {
+        let beerCell = document.createElement("div");
+        beerCell.classList.add("beerCell");
+        if (beer.labels)
+            beerCell.style.backgroundImage = "url(" + beer.labels.medium + ")";
+        else
+            beerCell.style.backgroundImage = "url(https://www.publicdomainpictures.net/pictures/280000/nahled/not-found-image-15383864787lu.jpg)";
+
+        let beerTitle = document.createElement("div");
+        beerTitle.textContent = beer.name;
+        if(!beer.description)
+            beerTitle.classList.add("noDesc");
+        beerTitle.classList.add("beerTitle");
+
+        beerCell.append(beerTitle);
+
+        beerCell.addEventListener("click", e => {
+            console.log(beer);
+            switchDescription(true, beer.description);
+        });
+
+        displayBeer.append(beerCell);
+    });
+}
+
+function displayPages(actualPage, totalPages) {
+    let displayPageBeer = document.querySelector("#displayPageBeer");
+    // Clear pages list
+    displayPageBeer.innerHTML = "";
+    
+    for (let i = 1; i <= totalPages; i++) {
+        if (i == actualPage) {
+            let np = document.createElement("span");
+            np.textContent += ("(" + i + ") ");
+            displayPageBeer.append(np);
+        }
+        else {
+            let a = document.createElement("span");
+            a.textContent += (i + " ");
+            a.classList.add("a");
+            a.addEventListener("click", e => {
+                window.scrollTo(0, 0);
+                fetch("/beers/" + i + "/" + searchValue)
+                    .then(dataResponse => {
+                        if (dataResponse.ok) {
+                            dataResponse.json().then(data => {
+                                displayProtocol(data);
+                            });
+                        }
+                    });
+            });
+            displayPageBeer.append(a);
+        }
+    }
+}
+
+function switchDescription(on, text = "") {
+    let beerDescription = document.querySelector("#description");
+    beerDescription.textContent = text || "No description";
+    if (on) {
+        beerDescription.style.opacity = 1;
+        beerDescription.style.width = "95vw";
+        beerDescription.style.height = "100vh";
+        document.body.addEventListener("mouseup", descListener);
+    } else {
+        beerDescription.style.opacity = 0;
+        beerDescription.style.width = "0";
+        beerDescription.style.height = "0";
+        document.body.removeEventListener("mouseup", descListener);
+    }
+}
+
+function descListener() {
+    switchDescription(false);
+}

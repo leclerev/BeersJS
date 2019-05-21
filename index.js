@@ -1,6 +1,7 @@
 const express = require('express')
 var request = require('request');
 const axios = require("axios");
+const key = "key=83c3578c4780db48dd6cf842b8017ddf";
 
 const app = express()
 
@@ -11,9 +12,11 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-app.get('/beer', function(req, res) {
-  req.pipe(request("https://api.brewerydb.com/v2/beers?key=83c3578c4780db48dd6cf842b8017ddf")).pipe(res);
-})
+app.get('/beers/:p?/:name?', function(req, res) {
+  let p = req.params.p ? "p=" + req.params.p + "&": "";
+  let name = req.params.name ? "name=" + req.params.name + "&" : "";
+  req.pipe(request("https://api.brewerydb.com/v2/beers?" + p + name + key)).pipe(res);
+});
 
 app.listen(process.env.PORT || 3000);
 
