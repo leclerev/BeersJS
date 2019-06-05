@@ -28,10 +28,24 @@ beerSearchButton.addEventListener("click", e => {
         .then(dataResponse => {
             if (dataResponse.ok) {
                 dataResponse.json().then(data => {
-                    displayProtocol(data);
+                    if(data.data)
+                        displayProtocol(data);
+                    else {
+                        let json = {
+                            data: { isEmpty: true },
+                            currentPage: 1,
+                            numberOfPages: 1
+                        };
+                        displayProtocol(json);
+                    }
                 });
             }
         });
+});
+beerSearchName.addEventListener("keyup", e => {
+    if (e.keyCode === 13) {
+        beerSearchButton.click();
+    }
 });
 
 /* ---------------------------------------------------------- */
@@ -59,30 +73,37 @@ function displayBeers(json) {
     // clear display
     displayBeer.innerHTML = "";
 
-    //beer request
-    json.forEach(beer => {
-        let beerCell = document.createElement("div");
-        beerCell.classList.add("beerCell");
-        if (beer.labels)
-            beerCell.style.backgroundImage = "url(" + beer.labels.medium + ")";
-        else
-            beerCell.style.backgroundImage = "url(https://www.publicdomainpictures.net/pictures/280000/nahled/not-found-image-15383864787lu.jpg)";
+    if(json.isEmpty) {
+        let page404 = document.createElement("div");
+        let error404 = document.createElement("div");
+        error404.textContent = "Beer not found";
+        page404.append(error404);
+        displayBeer.append(page404);
+    } else {
+        //beer request
+        json.forEach(beer => {
+            let beerCell = document.createElement("div");
+            beerCell.classList.add("beerCell");
+            if (beer.labels)
+                beerCell.style.backgroundImage = "url(" + beer.labels.medium + ")";
+            else
+                beerCell.style.backgroundImage = "url(https://www.publicdomainpictures.net/pictures/280000/nahled/not-found-image-15383864787lu.jpg)";
 
-        let beerTitle = document.createElement("div");
-        beerTitle.textContent = beer.name;
-        if(!beer.description)
-            beerTitle.classList.add("noDesc");
-        beerTitle.classList.add("beerTitle");
+            let beerTitle = document.createElement("div");
+            beerTitle.textContent = beer.name;
+            if(!beer.description)
+                beerTitle.classList.add("noDesc");
+            beerTitle.classList.add("beerTitle");
 
-        beerCell.append(beerTitle);
+            beerCell.append(beerTitle);
 
-        beerCell.addEventListener("click", e => {
-            console.log(beer);
-            switchDescription(true, beer.description);
+            beerCell.addEventListener("click", e => {
+                switchDescription(true, beer.id, beer.description);
+            });
+
+            displayBeer.append(beerCell);
         });
-
-        displayBeer.append(beerCell);
-    });
+    }
 }
 
 function displayPages(actualPage, totalPages) {
@@ -116,9 +137,29 @@ function displayPages(actualPage, totalPages) {
     }
 }
 
-function switchDescription(on, text = "") {
+function switchDescription(on, beerId = "", text = "") {
     let beerDescription = document.querySelector("#description");
     beerDescription.textContent = text || "No description";
+    if(text != "" || beerId != "") {
+        fetch("/beerBrewery/" + beerId)
+            .then(dataResponse => {
+                if(dataResponse.ok) {
+                    let breweriesInfos = document.createElement("p");
+                    breweriesInfos.id = "breweriesInfos";
+                    breweriesInfos.textContent = "That beer is brewed in:";
+                    let breweriesList = document.createElement("ul");
+                    dataResponse.json().then(data => {
+                        data.data.forEach(breweryData => {
+                            let brewerieElement = document.createElement("li");
+                            brewerieElement.textContent += breweryData.name;
+                            breweriesList.append(brewerieElement);
+                        });
+                    });
+                    breweriesInfos.append(breweriesList);
+                    beerDescription.append(breweriesInfos);
+                }
+            });
+    }
     if (on) {
         beerDescription.style.opacity = 1;
         beerDescription.style.width = "95vw";

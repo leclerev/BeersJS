@@ -12,10 +12,16 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
 });
 
+// Get Beer
 app.get('/beers/:p?/:name?', function(req, res) {
   let p = req.params.p ? "p=" + req.params.p + "&": "";
   let name = req.params.name ? "name=" + req.params.name + "&" : "";
   req.pipe(request("https://api.brewerydb.com/v2/beers?" + p + name + key)).pipe(res);
+});
+
+// Get Brewery of a beer
+app.get('/beerBrewery/:id', function(req, res) {
+  req.pipe(request("https://api.brewerydb.com/v2/beer/" + req.params.id + "/breweries?" + key)).pipe(res);
 });
 
 app.listen(process.env.PORT || 3000);
