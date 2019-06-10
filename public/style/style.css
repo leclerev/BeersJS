@@ -5,29 +5,41 @@
     padding: 0;
 }
 
-#headbar {
-    text-align: center;
-    background-color: rgba(179, 179, 179, 0.726);
+.element {
+    display: block;
+    min-width: 98vw;
+    min-height: 100vh;
+    background-color: rgb(255, 255, 255);
+}
+
+.bg-image {
+    display: block;
+    height: 100vh;
+    background-image: url("/images/hg-2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /*Blur*/
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+}
+
+#welcome h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: solid 3px #f1f1f1;
 }
 
 h1 {
-    margin: 10px;
-}
-
-.headbarMenu {
-    display: inline-block;
-    transition: .5s;
-    background-color: rgb(104, 104, 255);
+    background-color: rgba(0,0,0, 0.4);
     color: white;
-    text-decoration: none;
-    margin: 10px;
-    padding: 5px;
+    padding: 20px;
 }
 
-.headbarMenu:hover {
-    background-color: rgb(58, 58, 255);
-    margin: 15px;
-    padding: 10px;
+#search h1 {
+    margin: 10px;
 }
 
 .beerCell {
@@ -73,8 +85,7 @@ h1 {
     background-color: rgba(24, 24, 24, 0.829);
     opacity: 0;
     z-index: 1000;
-    /*overflow: scroll;
-    overflow-x: hidden;*/
+    font-size: 2vh;
     height: 0;
     width: 0;
     top: 0;
@@ -97,7 +108,24 @@ h1 {
 
 .a {
     cursor: pointer;
-    color: rgb(58, 58, 255);
+    display: inline-block;
+    transition: .5s;
+    background-color: rgb(104, 104, 255);
+    color: black;
+    text-decoration: none;
+    margin: 10px;
+    padding: 5px;
+}
+
+.actual {
+    cursor: default;
+    background-color: rgb(166, 160, 255);
+}
+
+.a:hover {
+    background-color: rgb(58, 58, 255);
+    margin: 15px;
+    padding: 10px;
 }
 
 .beerCell:hover {

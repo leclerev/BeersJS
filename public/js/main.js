@@ -4,20 +4,6 @@
 // getAllBeers: https://api.brewerydb.com/v2/beers?key=83c3578c4780db48dd6cf842b8017ddf
 // http://dut-info-annecy.fr/dim2019/
 
-/* HEADBAR */
-/* ------------ Defining all elements in headbar ------------ */
-
-let headbar = document.getElementById("headbar");
-let allElements = document.querySelectorAll(".element");
-
-allElements.forEach(element => {
-    let headbarMenu = document.createElement("a");
-    headbarMenu.innerText = element.title;
-    headbarMenu.href = "#" + element.id;
-    headbarMenu.classList.add("headbarMenu");
-    headbar.append(headbarMenu);
-});
-
 /* ---------------------------------------------------------- */
 
 let beerSearchName = document.querySelector("#beerSearchName");
@@ -114,6 +100,8 @@ function displayPages(actualPage, totalPages) {
     for (let i = 1; i <= totalPages; i++) {
         if (i == actualPage) {
             let np = document.createElement("span");
+            np.classList.add("a");
+            np.classList.add("actual");
             np.textContent += ("(" + i + ") ");
             displayPageBeer.append(np);
         }
@@ -122,7 +110,8 @@ function displayPages(actualPage, totalPages) {
             a.textContent += (i + " ");
             a.classList.add("a");
             a.addEventListener("click", e => {
-                window.scrollTo(0, 0);
+                //window.scrollTo(0, 0);
+                location.href = "#search";
                 fetch("/beers/" + i + "/" + searchValue)
                     .then(dataResponse => {
                         if (dataResponse.ok) {

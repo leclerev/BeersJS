@@ -7,6 +7,7 @@ const app = express()
 
 app.use('/style', express.static(__dirname + '/public/style'));
 app.use('/js', express.static(__dirname + '/public/js'));
+app.use('/images', express.static(__dirname + '/public/images'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
