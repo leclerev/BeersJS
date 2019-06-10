@@ -7,5 +7,5 @@
 </ol>
 
 ## Informations
-Pour accéder au site, il faut entrer l'URL "localhost:3000"
+Pour accéder au site, il faut entrer l'URL "localhost:3000"<br/>
 Si vous avez des questions, envoyez les à l'adresse : valentin.leclere@outlook.fr
